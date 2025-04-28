@@ -13,3 +13,18 @@ python load_docs.py
 ```
 uvicorn chroma_api:app --host 0.0.0.0 --port 8001 --reload
 ```
+
+
+## NB: 
+- Not in DB: 
+Could not extract related link: /Refrigerator-Hardware.htm
+Could not extract related link: /Refrigerator-Switches.htm
+Could not extract related link: /Refrigerator-Electronics.htm
+Could not extract related link: /Refrigerator-Dispensers.htm
+Could not extract related link: /Refrigerator-Timers.htm
+Could not extract related link: /Refrigerator-Springs-and-Shock-Absorbers.htm
+Could not extract related link: /Refrigerator-Ducts-and-Vents.htm
+
+Could not extract related link: /Blomberg-Dishwasher-Parts.htm
+Could not extract related link: /Kelvinator-Dishwasher-Parts.htm
+Could not extract related link: /LG-Dishwasher-Parts.htm

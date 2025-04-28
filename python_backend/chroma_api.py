@@ -24,6 +24,23 @@ model = SentenceTransformer("all-MiniLM-L6-v2")
 client = chromadb.HttpClient(host="localhost", port=8000)
 collection = client.get_or_create_collection(name="my_collection")
 
+# add metadata filtering for fridge and dishwasher
+# def extract_metadata(query):
+#     query = query.lower()
+#     metadata = {}
+
+#     if "dishwasher" in query:
+#         metadata["category"] = "dishwasher"
+#     elif "fridge" in query or "refrigerator" in query:
+#         metadata["category"] = "refrigerator"
+
+#     known_brands = ["whirlpool", "lg", "samsung", "ge", "bosch"]
+#     for brand in known_brands:
+#         if brand in query:
+#             metadata["brand"] = brand
+#             break
+
+#     return metadata
 
 # Define request model
 class QueryRequest(BaseModel):

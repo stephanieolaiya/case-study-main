@@ -5,16 +5,13 @@ import json
 # Load model
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
-# # Sample documents
-# documents = [
-#     "Chroma is an open-source vector database.",
-#     "You can use embeddings to do semantic search.",
-#     "FastAPI is a Python framework for building APIs.",
-#     "Vector similarity search finds related texts.",
-# ]
+with open('./webscrappers/data/fridge_cleaned_data.jsonl', 'r') as f:
+    fridge_documents = [json.dumps(json.loads(line)) for line in f]
 
-with open('./webscrappers/data/scraped_data.jsonl', 'r') as f:
-    documents = [json.dumps(json.loads(line)) for line in f]
+with open('./webscrappers/data/dishwasher_cleaned_data.jsonl', 'r') as f:
+    dishwasher_documents = [json.dumps(json.loads(line)) for line in f] 
+
+documents = fridge_documents + dishwasher_documents
 
 # Generate embeddings
 embeddings = model.encode(documents)
