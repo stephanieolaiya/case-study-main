@@ -1,9 +1,41 @@
 from sentence_transformers import SentenceTransformer # type: ignore
 import chromadb # type: ignore
 import json
+import numpy as np
+from transformers import AutoTokenizer
+
+# Load model without chunking
+# model = SentenceTransformer("all-MiniLM-L6-v2")
 
 # Load model
-model = SentenceTransformer("all-MiniLM-L6-v2")
+model_name = "all-mpnet-base-v2"
+model = SentenceTransformer(model_name)
+tokenizer = AutoTokenizer.from_pretrained('sentence-transformers/all-mpnet-base-v2')
+
+def chunk_text(text, max_tokens=512):
+    """
+    Given that data is very long, chunck document text to fit in sentence model window
+    """
+    words = text.split()
+    chunks = []
+    current_chunk = []
+    for word in words:
+        current_chunk.append(word)
+        tokenized = tokenizer(" ".join(current_chunk), truncation=False)
+        if len(tokenized['input_ids']) > max_tokens:
+            current_chunk.pop()
+            chunks.append(" ".join(current_chunk))
+            current_chunk = [word]
+    if current_chunk:
+        chunks.append(" ".join(current_chunk))
+    return chunks
+
+# Get document embeddings (use mean of chunks)
+def embed_document(text):
+    chunks = chunk_text(text)
+    embeddings = model.encode(chunks)
+    return np.mean(embeddings, axis=0) 
+
 
 # Create documents from data files
 documents = []
@@ -20,7 +52,8 @@ for file_path in data_files_path:
         documents += file_content
 
 # Generate embeddings
-embeddings = model.encode(documents)
+# embeddings = model.encode(documents) # without chunking
+embeddings = [embed_document(doc) for doc in documents]
 
 # Connect to ChromaDB server
 client = chromadb.HttpClient(host="localhost", port=8000)
@@ -29,7 +62,7 @@ collection = client.get_or_create_collection(name="my_collection")
 # Add documents
 collection.add(
     documents=documents,
-    embeddings=embeddings.tolist(),
+    embeddings=embeddings, # embeddings.tolist() without chunking
     ids=[f"doc{i}" for i in range(len(documents))],
     metadatas=[{"source": f"doc{i}"} for i in range(len(documents))]
 )

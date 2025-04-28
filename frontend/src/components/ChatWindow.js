@@ -13,7 +13,7 @@ function ChatWindow() {
     role: "assistant",
     content: `Hi, I am intelligent chat agent for ParkSelect who can assist you with information about Refrigerator and Dishwasher parts from our catalog. I can answer questions about:
 
-    1. Popular model and product compatibility
+    1. Popular models and product compatibility
     2. Installation of parts
     3. Descriptions and Prices of Parts 
     4. Common issues with products and how to fix them.
@@ -74,13 +74,13 @@ function ChatWindow() {
           <div className="example-rectangle" onClick={() => {handleSend("How can I install refrigerator part PS2358880?")}}>
             How can I install refrigerator part PS2358880?
           </div>
-          <div className="example-rectangle" onClick={() => {handleSend(" What is the cost of refrigerator part PS304103?")}}>
+          <div className="example-rectangle" onClick={() => {handleSend(" What is the cost of part PS304103?")}}>
             What is the cost of part PS304103?
           </div>
           <div className="example-rectangle" onClick={() => {handleSend("What evaporator fan motor is compatible with refrigerator model GTH18GBDCRWW?")}}>
             What evaporator fan motor is compatible with refrigerator model GTH18GBDCRWW?
           </div>
-          <div className="example-rectangle" onClick={() => {handleSend("What evaporator fan motor is compatible with refrigerator model GTH18GBDCRWW?")}}>
+          <div className="example-rectangle" onClick={() => {handleSend("How can I fix my noisy dishwasher?")}}>
             How can I fix my noisy dishwasher?
           </div>
       </div>

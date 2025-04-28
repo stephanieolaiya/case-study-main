@@ -10,6 +10,25 @@ load_dotenv()
 SCRAPER_API_KEY = os.getenv("SCRAPER_API_KEY")
 
 def scrape_product_page(product_page_url, product): 
+    """
+    Scrapes a product page for part details, model and brand information, and related links.
+
+    Args:
+        product_page_url (str): The URL of the product page to scrape.
+        product (str): A label or identifier for the product (used for return labeling).
+
+    Returns:
+        tuple:
+            - dict: A dictionary containing:
+                - "product" (str): The input product label.
+                - "popular parts" (list of dict): Part information including names, numbers, descriptions, and instructions.
+                - "models" (list of str): Model names extracted from the page.
+                - "brands" (list of str): Brand names extracted from the page.
+                - "common problems fixes" (str or None): Text describing common problems and fixes if found.
+            - list of str: Links related to the brands.
+            - list of str: Links related to the models.
+            - list of str: Links to related parts or other relevant resources.
+    """
     payload = { 'api_key': SCRAPER_API_KEY, 'url': product_page_url}
     page = requests.get('https://api.scraperapi.com/', params=payload)
     if page.status_code != 200:
@@ -50,7 +69,6 @@ def scrape_product_page(product_page_url, product):
             for li in ul.find_all('li')
             for a in li.find_all('a', href=True)
         ]   
-
         # extract brand links, related parts links, model links 
         brands = []
         brand_links = []
@@ -82,6 +100,14 @@ def scrape_product_page(product_page_url, product):
 
 
 def scrape_model_links(models, model_page_links, filepath):
+    """
+    Scrapes parts data for each product model from its product page and appends the results to data file.
+
+    Args:
+        models (list of str): List of model.
+        model_page_links (list of str): List of relative URLs to model pages.
+        filepath (str): Path to the output file where the scraped data will be appended as JSON lines.
+    """
     assert(len(models) == len(model_page_links))
     base_url = 'https://www.partselect.com/'
     for model, model_link in zip(models, model_page_links):
@@ -121,6 +147,13 @@ def scrape_model_links(models, model_page_links, filepath):
             print(f"Could not extract model: {model}")
 
 def scrape_related_parts(related_parts_links, filepath):
+    """
+    Scrapes parts information from related parts links and appends results to a file.
+
+    Args:
+        related_parts_links (list of str): List of relative URLs pointing to related parts pages.
+        filepath (str): Path to the output file where the scraped data will be appended as JSON lines.
+    """
     base_url = 'https://www.partselect.com/'
     for related_link in related_parts_links[1:]:
         time.sleep(2)
@@ -167,6 +200,32 @@ def scrape_related_parts(related_parts_links, filepath):
         else: 
             print(f"Could not extract related link: {related_link}")
 
+def scrape_repair_page(repair_link, product, filepath):
+    base_url = "https://www.partselect.com"
+    payload = { 'api_key': SCRAPER_API_KEY, 'url': repair_link}
+    page = requests.get('https://api.scraperapi.com/', params=payload)
+    if page.status_code == 200:
+        soup = BeautifulSoup(page.content, "html.parser")
+        symptoms_div = soup.find("div", class_="symptom-list")
+        problems = symptoms_div.find_all("a", class_="row text-black no-underline b-b")
+        product_problems = []
+        for problem in problems:
+            problem_title = problem.find("h3", class_="title-md mb-3")
+            problem_name = problem_title.get_text()
+            troubleshooting_page_link = problem['href'] if problem and 'href' in problem.attrs else None
+            problem_description = problem.find("p").get_text()
+            problem_info = {
+                "name of problem": product + problem_name,
+                "troubleshooting steps and videos link": base_url + troubleshooting_page_link,
+                "parts to examine": problem_description
+            }
+            print(problem_info)
+            product_problems.append(problem_info)
+        with open('./data/fridge_repair.jsonl', 'a') as f:
+            f.write(json.dumps(product_problems) + '\n')
+    else:
+        print("Scraping failed")           
+
 
 
 
@@ -185,6 +244,12 @@ if __name__ == "__main__":
     print("Scraping related parts...")
     scrape_related_parts(related_parts_links, './data/fridge_cleaned_data.jsonl')
 
+    # scrape repairs page
+    print("Scraping repair page")
+    repair_link = "https://www.partselect.com/Repair/Refrigerator/"
+    product =  "Refrigerator "
+    scrape_repair_page(repair_link, product, "./data/fridge_repair.jsonl")
+
 
     print("Scraping product page ...")
     product_info_json, brand_links, model_links, related_parts_links = scrape_product_page("https://www.partselect.com/Dishwasher-Parts.htm", 'Dishwashers')
@@ -198,5 +263,11 @@ if __name__ == "__main__":
     # scrape related links
     print("Scraping related parts...")
     scrape_related_parts(related_parts_links, './data/dishwasher_cleaned_data.jsonl')
+
+    # scrape repairs page
+    print("Scraping repair page")
+    repair_link = "https://www.partselect.com/Repair/Dishwasher/"
+    product =  "Dishwasher "
+    scrape_repair_page(repair_link, product, "./data/dishwasher_repair.jsonl")
     
 
