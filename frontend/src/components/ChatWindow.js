@@ -4,16 +4,26 @@ import { getAIMessage, getContext } from "../api/api";
 import { marked } from "marked";
 import chatbotIcon from "../img/chatbot_icon.png"
 import userIcon from "../img/user_icon.png"
+import { ClipLoader } from "react-spinners";
+
 
 function ChatWindow() {
 
   const defaultMessage = [{
     role: "assistant",
-    content: "Hi, I am intelligent chat agent for ParkSelect who can assist you with information about Refrigerator and Dishwasher parts from our catalog.  How can I help you today?"
+    content: `Hi, I am intelligent chat agent for ParkSelect who can assist you with information about Refrigerator and Dishwasher parts from our catalog. I can answer questions about:
+
+    1. Popular model and product compatibility
+    2. Installation of parts
+    3. Descriptions and Prices of Parts 
+    4. Common issues with products and how to fix them.
+  
+    How can I help you today?`
   }];
 
   const [messages, setMessages] = useState(defaultMessage)
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const messagesEndRef = useRef(null);
 
@@ -30,16 +40,15 @@ function ChatWindow() {
       // Set user message
       setMessages(prevMessages => [...prevMessages, { role: "user", content: input }]);
       setInput("");
+      setLoading(true)
 
       // Call API & set assistant message
       const newMessage = await getAIMessage(input, messages);
+      setLoading(false)
       setMessages(prevMessages => [...prevMessages, newMessage]);
     }
   };
 
-  // add example questions: 
-  // 1 how can I install part number PS2358880
-  // 2. what is the cost of part PS304103
 
   return (
     <div className="messages-container">
@@ -62,14 +71,22 @@ function ChatWindow() {
       <div ref={messagesEndRef} />
       <div className="example-questions">
           <p><strong>Example questions:</strong></p>
-          <div className="example-rectangle">
+          <div className="example-rectangle" onClick={() => {handleSend("How can I install part number PS2358880?")}}>
             How can I install part number PS2358880?
           </div>
-          <div className="example-rectangle">
+          <div className="example-rectangle" onClick={() => {handleSend(" What is the cost of part PS304103?")}}>
             What is the cost of part PS304103?
           </div>
+          <div className="example-rectangle" onClick={() => {handleSend("What evaporator fan motor is compatible with refrigerator model GTH18GBDCRWW?")}}>
+            What evaporator fan motor is compatible with refrigerator model GTH18GBDCRWW?
+          </div>
       </div>
-
+      {loading && <div style={{display:"flex", justifyContent:'center'}}>
+        <ClipLoader
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>}
       <div className="input-area">
         <input
           value={input}

@@ -1,4 +1,22 @@
-## To get python backend started
+## Python Backend
+
+This contains code to: 
+1. Run the webscrapper to scrape parts from PartSelect website: 
+    ```
+    cd webscrappers
+    python parts_scrape.py
+    ```
+    To add more product types, run for product_url of the given type e.g 
+    https://www.partselect.com/Refrigerator-Parts.htm. 
+    ScraperAPI key is needed to run webscrapper script. Create .env file
+    based on .env.example provided. 
+
+    Data files are in the webscrappers/data folder in jsonl format. 
+
+2. Load documents into ChromaDB vector database and start Microservice API 
+to query database based on user query from frontend.
+
+### To get python backend started
 1. Start chroma db server: 
 ```
 chroma run --host 0.0.0.0 --port 8000
@@ -13,18 +31,3 @@ python load_docs.py
 ```
 uvicorn chroma_api:app --host 0.0.0.0 --port 8001 --reload
 ```
-
-
-## NB: 
-- Not in DB: 
-Could not extract related link: /Refrigerator-Hardware.htm
-Could not extract related link: /Refrigerator-Switches.htm
-Could not extract related link: /Refrigerator-Electronics.htm
-Could not extract related link: /Refrigerator-Dispensers.htm
-Could not extract related link: /Refrigerator-Timers.htm
-Could not extract related link: /Refrigerator-Springs-and-Shock-Absorbers.htm
-Could not extract related link: /Refrigerator-Ducts-and-Vents.htm
-
-Could not extract related link: /Blomberg-Dishwasher-Parts.htm
-Could not extract related link: /Kelvinator-Dishwasher-Parts.htm
-Could not extract related link: /LG-Dishwasher-Parts.htm

@@ -160,7 +160,7 @@
   padding: 10px 15px;
   border-radius: 12px; 
   margin: 5px;
-  max-width: 500px;
+  /* max-width: 500px; */
   word-wrap: break-word;
   font-size: 14px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);

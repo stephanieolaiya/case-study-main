@@ -19,7 +19,14 @@
   display: flex;
   font-weight: 700;
   font-size: 16px;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   height: 60px;
+}
+
+.contact-info {
+  display: block;
+  color: black;
+  text-decoration: underline;
+  text-align: center; 
 }
