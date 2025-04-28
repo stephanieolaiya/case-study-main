@@ -38,7 +38,16 @@ export const getAIMessage = async (userQuery, oldMessages) => {
       newMessages = [
         {
           "role": "system",
-          "content": `Use the retrieved context to answer as a chatbot to a user. Do not add "Based on the retrieved context," in your response. If a part is not in list of compatible parts for a model then they are not compatible. If retrieved context does not provide adequate information to answer user question, but you are sure of another response then provide that. If not then respond saying I currently do not have information regarding this product. Please try again later`
+          // "content": `Use the retrieved context to answer as a chatbot to a user. Do not add "Based on the retrieved context," in your response. If a part is not in list of compatible parts for a model then they are not compatible. If retrieved context does not provide adequate information to answer user question, but you are sure of another response then provide that. If not then respond saying I currently do not have information regarding this product. Please try again later`
+          "content": `Use the retrieved context to answer as a chatbot to a user. 
+          Do not add "Based on the retrieved context," in your response. 
+          If a part is not in list of compatible parts for a model then they are not compatible. 
+          If you are not sure about file content or codebase structure pertaining to 
+          the user's request, use your tools to read files and gather the relevant 
+          information: do NOT guess or make up an answer.
+          If retrieved context does not provide adequate information to answer user question, 
+          then respond saying I currently do not have information regarding this product. Please try again later`
+
         },
         {
           "role": "user",
@@ -118,6 +127,7 @@ export const getContext = async (userQuery) => {
     }
 
     const data = await res.json();
+    console.log(data)
     return data.results['documents'][0].toString();
   } catch (error) {
     console.error("Error in getContext:", error);

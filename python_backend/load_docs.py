@@ -5,13 +5,19 @@ import json
 # Load model
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
-with open('./webscrappers/data/fridge_cleaned_data.jsonl', 'r') as f:
-    fridge_documents = [json.dumps(json.loads(line)) for line in f]
+# Create documents from data files
+documents = []
 
-with open('./webscrappers/data/dishwasher_cleaned_data.jsonl', 'r') as f:
-    dishwasher_documents = [json.dumps(json.loads(line)) for line in f] 
+data_files_path = ['./webscrappers/data/fridge_cleaned_data.jsonl', 
+                   './webscrappers/data/dishwasher_cleaned_data.jsonl',
+                   './webscrappers/data/dishwasher_repair.jsonl',
+                    './webscrappers/data/fridge_repair.jsonl'
+                   ]
 
-documents = fridge_documents + dishwasher_documents
+for file_path in data_files_path:
+    with open(file_path, 'r') as f:
+        file_content = [json.dumps(json.loads(line)) for line in f]
+        documents += file_content
 
 # Generate embeddings
 embeddings = model.encode(documents)

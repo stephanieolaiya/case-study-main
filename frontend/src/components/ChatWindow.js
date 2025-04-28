@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./ChatWindow.css";
-import { getAIMessage, getContext } from "../api/api";
+import { getAIMessage } from "../api/api";
 import { marked } from "marked";
 import chatbotIcon from "../img/chatbot_icon.png"
 import userIcon from "../img/user_icon.png"
@@ -56,7 +56,7 @@ function ChatWindow() {
         <div key={index} className={`${message.role}-message-container`}>
           <div className={`${message.role}-message-group`}>
             <div className="user-circle">
-              {message.role == "user" ? <img src={userIcon} alt="chatbot icon"></img>
+              {message.role === "user" ? <img src={userIcon} alt="chatbot icon"></img>
               :  <img src={chatbotIcon} alt="chatbot icon"></img>}
              
             </div>
@@ -71,14 +71,17 @@ function ChatWindow() {
       <div ref={messagesEndRef} />
       <div className="example-questions">
           <p><strong>Example questions:</strong></p>
-          <div className="example-rectangle" onClick={() => {handleSend("How can I install part number PS2358880?")}}>
-            How can I install part number PS2358880?
+          <div className="example-rectangle" onClick={() => {handleSend("How can I install refrigerator part PS2358880?")}}>
+            How can I install refrigerator part PS2358880?
           </div>
-          <div className="example-rectangle" onClick={() => {handleSend(" What is the cost of part PS304103?")}}>
+          <div className="example-rectangle" onClick={() => {handleSend(" What is the cost of refrigerator part PS304103?")}}>
             What is the cost of part PS304103?
           </div>
           <div className="example-rectangle" onClick={() => {handleSend("What evaporator fan motor is compatible with refrigerator model GTH18GBDCRWW?")}}>
             What evaporator fan motor is compatible with refrigerator model GTH18GBDCRWW?
+          </div>
+          <div className="example-rectangle" onClick={() => {handleSend("What evaporator fan motor is compatible with refrigerator model GTH18GBDCRWW?")}}>
+            How can I fix my noisy dishwasher?
           </div>
       </div>
       {loading && <div style={{display:"flex", justifyContent:'center'}}>

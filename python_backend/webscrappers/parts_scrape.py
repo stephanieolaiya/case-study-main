@@ -168,6 +168,8 @@ def scrape_related_parts(related_parts_links, filepath):
             print(f"Could not extract related link: {related_link}")
 
 
+
+
 if __name__ == "__main__":
 
     print("Scraping product page ...")

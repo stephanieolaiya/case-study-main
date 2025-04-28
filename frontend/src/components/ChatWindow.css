@@ -1,5 +1,16 @@
 @import "rsuite/dist/rsuite.css";
 
+.message {
+  padding: 14px 18px;
+  margin: 4px 0;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 80%;
+  word-wrap: break-word;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.08);
+}
+
 .messages-container {
   flex: 1;
   overflow-y: auto;
@@ -61,17 +72,6 @@
   flex-direction: row-reverse;
 }
 
-.message {
-  white-space: pre-line;
-  padding: 14px;
-  margin: 2px 0;
-  border-radius: 10px;
-  clear: both;
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.4;
-  text-align: left;
-}
 
 .user-message {
   align-self: flex-end;
