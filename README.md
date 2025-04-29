@@ -28,3 +28,6 @@ Some example queries are:
 - Run more intense scraping script to capture more product data. 
 - Add more links to PartSelect website for images and videos (currently only limited to fix troubleshooting websites). 
 
+### Loom Video Link
+- [Loom Video](https://www.loom.com/share/63b39c892eda44de8f1da496b9c24794?sid=6d196d64-8ad8-4d9e-bcd8-59a68bd3e1a7)
+- [Google Slides](!https://docs.google.com/presentation/d/1b7XWUUUfjq_1wzrbWK2LXCpHnsFpta_wFM5An6Z8Utw/edit?usp=sharing)
