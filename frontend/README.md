@@ -1,4 +1,15 @@
-# Getting Started with Create React App
+# Starting frontend
+
+First create .env file based on .env.example provided. 
+
+Then run 
+```
+# if running for the first time, download packages
+npm install
+
+# Start frontend
+npm start
+```
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

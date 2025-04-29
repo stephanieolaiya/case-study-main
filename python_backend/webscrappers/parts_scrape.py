@@ -11,7 +11,7 @@ SCRAPER_API_KEY = os.getenv("SCRAPER_API_KEY")
 
 def scrape_product_page(product_page_url, product): 
     """
-    Scrapes a product page for part details, model and brand information, and related links.
+    Scrapes a product page for part details, popular models and brands and related parts links.
 
     Args:
         product_page_url (str): The URL of the product page to scrape.
@@ -20,14 +20,14 @@ def scrape_product_page(product_page_url, product):
     Returns:
         tuple:
             - dict: A dictionary containing:
-                - "product" (str): The input product label.
+                - "product" (str): The product type - Dishwasher, Refrigerator, etc.
                 - "popular parts" (list of dict): Part information including names, numbers, descriptions, and instructions.
                 - "models" (list of str): Model names extracted from the page.
                 - "brands" (list of str): Brand names extracted from the page.
                 - "common problems fixes" (str or None): Text describing common problems and fixes if found.
             - list of str: Links related to the brands.
             - list of str: Links related to the models.
-            - list of str: Links to related parts or other relevant resources.
+            - list of str: Links to product related parts.
     """
     payload = { 'api_key': SCRAPER_API_KEY, 'url': product_page_url}
     page = requests.get('https://api.scraperapi.com/', params=payload)
@@ -199,6 +199,7 @@ def scrape_related_parts(related_parts_links, filepath):
                 f.write(json.dumps(part_group_info) + '\n')
         else: 
             print(f"Could not extract related link: {related_link}")
+
 
 def scrape_repair_page(repair_link, product, filepath):
     base_url = "https://www.partselect.com"

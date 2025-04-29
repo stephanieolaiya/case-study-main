@@ -51,7 +51,7 @@ for file_path in data_files_path:
         file_content = [json.dumps(json.loads(line)) for line in f]
         documents += file_content
 
-# Generate embeddings
+# Generate embeddings from documents
 # embeddings = model.encode(documents) # without chunking
 embeddings = [embed_document(doc) for doc in documents]
 
